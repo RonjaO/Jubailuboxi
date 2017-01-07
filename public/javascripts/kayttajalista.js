@@ -30,6 +30,10 @@ $("#send").click(function() {
 socket.onmessage = function (event) {
     console.log(event.data);
     
-  
+    var message = JSON.parse(event.data);
+    var time = new Date(message.date);
+    var timestring = time.toTimeString().substring(0, 5);
+$("<p/>").text(timestring + " - " + message.content).appendTo("#chat");
+    
 }
 
