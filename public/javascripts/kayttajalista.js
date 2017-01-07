@@ -12,3 +12,24 @@ $("#kayttajat").click(function() {
         
     });
 });
+
+var HOST = location.origin.replace(/^http/, 'ws')
+var socket = new WebSocket(HOST, "echo-protocol");
+// exampleSocket.connect
+
+$("#send").click(function() {
+    var message = {
+        type: "message",
+        content: document.getElementById("message").value,
+        date: Date.now()
+    };
+      socket.send(JSON.stringify(message));
+      document.getElementById("message").value = "";
+})
+
+socket.onmessage = function (event) {
+    console.log(event.data);
+    
+  
+}
+
