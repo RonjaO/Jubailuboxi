@@ -3,6 +3,7 @@ var router = express.Router();
 var pg = require('pg');
 var path = require('path');
 var connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/chat';
+var bodyParser = require('body-parser');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -33,5 +34,21 @@ router.get('/kayttajat', function(req, res, next) {
         });
     });
 });
+
+router.post('/login', (req, res, next) => {
+    var nick = req.body.nick;
+    console.log("Haluttiin nimimerkki " + nick);
+    pg.connect(connectionString, (err, client, done) => {
+        if (err) {
+            done();
+            console.log(err);
+            return res.status(500).json({success: false, data: err});
+        }
+        client.query("INSERT INTO users(nick) SELECT nick WHERE NOT EXISTS (SELECT id FROM users WHERE nick=" + nick + ") RETURNING id;");
+    });
+    res.render('index', { title: 'Jubailuboxi', user: 'nick' });
+    
+});
+
 
 module.exports = router;

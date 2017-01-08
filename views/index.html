@@ -7,14 +7,16 @@
     
     <body>
         <h1><%= title %></h1>
-        <p>Tervetuloa <%= title %>iin!</p>
+        <p>Tervetuloa <%= title %>in!</p>
+
+        <form method="post" action="/login">
+            <p>Valitse nimimerkki</p>
+            <input type="text" name="nick">
+            <input type="submit" value="Liity keskusteluun">
+        </form>
+
         
-        <button id="kayttajat">Lista käyttäjistä</button>
-        
-        <div id="lista">
-            <p>Kaikki rekisteröityneet käyttäjät</p>
-        </div>
-        
+
         <h2>Chat</h2>
         <div id="chat">
             
@@ -22,6 +24,7 @@
         
         <input type="text" id="message" aria-label="Kirjoita viesti">
         <button id="send">Lähetä</button>
+        
 
         <script src="/javascripts/kayttajalista.js"></script>
         

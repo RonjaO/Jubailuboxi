@@ -1,6 +1,8 @@
 CREATE TABLE users(
     id SERIAL PRIMARY KEY,
-    nick varchar(20) NOT NULL
+    nick varchar(20) UNIQUE,
+    username varchar(50),
+    password varchar(200)
 );
 
 CREATE TABLE chatroom(
