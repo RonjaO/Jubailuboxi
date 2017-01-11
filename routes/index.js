@@ -44,9 +44,13 @@ router.post('/login', (req, res, next) => {
             console.log(err);
             return res.status(500).json({success: false, data: err});
         }
-        client.query("INSERT INTO users(nick) SELECT nick WHERE NOT EXISTS (SELECT id FROM users WHERE nick=" + nick + ") RETURNING id;");
+        var query = client.query("INSERT INTO users(nick) SELECT $1 WHERE NOT EXISTS (SELECT id FROM users WHERE nick=$2) RETURNING id", [nick, nick]);
+        query.on('end', () => {
+            done();
+            return     res.render('index', { title: 'Jubailuboxi', user: nick });
+
+        });
     });
-    res.render('index', { title: 'Jubailuboxi', user: 'nick' });
     
 });
 
