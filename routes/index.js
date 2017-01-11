@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Jubailuboxi' });
+  res.render('index', { title: 'Jubailuboxi', user: null });
 });
 
 router.get('/kayttajat', function(req, res, next) {
@@ -47,7 +47,8 @@ router.post('/login', (req, res, next) => {
         var query = client.query("INSERT INTO users(nick) SELECT $1 WHERE NOT EXISTS (SELECT id FROM users WHERE nick=$2) RETURNING id", [nick, nick]);
         query.on('end', () => {
             done();
-            return     res.render('index', { title: 'Jubailuboxi', user: nick });
+            req.flash('user', nick);
+            return     res.redirect('/');
 
         });
     });

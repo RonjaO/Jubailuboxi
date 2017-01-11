@@ -17,6 +17,7 @@
     "pg": "~6.1.0",
     "serve-favicon": "~2.3.0",
     "ejs": "~2.5.5",
+    "express-flash": "~0.0.2",
     "websocket": "~1.0.24"
   }
 }

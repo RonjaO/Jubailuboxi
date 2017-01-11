@@ -1,4 +1,5 @@
 var express = require('express');
+var flash = require('express-flash');
 var passport = require('passport');
 var path = require('path');
 var pg = require('pg');
@@ -12,6 +13,7 @@ var routes = require('./routes/index');
 var login = require('./routes/login');
 var users = require('./routes/users');
 var connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/chat';
+var sessionStore = new session.MemoryStore;
 
 var app = express();
 
@@ -26,8 +28,15 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(session({ secret: 'keyboard cat'}));
+app.use(session({
+    cookie: { maxAge: 60000 },
+    store: sessionStore,
+    saveUninitialized: true,
+    resave: 'true',
+    secret: 'secret'
+}));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(flash);
 
 app.use('/', routes);
 app.use('/users', users);
