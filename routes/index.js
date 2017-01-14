@@ -6,13 +6,12 @@ var connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/ch
 var bodyParser = require('body-parser');
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-        // console.log("Kirjautuneena " + res.local.sessionFlash.message);
-  res.render('index', { title: 'Jubailuboxi', sessionFlash: res.locals.sessionFlash });
+router.get('/', ensureAuthenticated, function(req, res, next) {
+  res.render('index', { title: 'Jubailuboxi', user: req.user });
 });
 
 router.get('/kayttajat', function(req, res, next) {
-    const results = [];
+    const results = []; 
     // Get a Postgres client from the connection pool
     pg.connect(connectionString, (err, client, done) => {
       // Handle connection errors
@@ -36,25 +35,33 @@ router.get('/kayttajat', function(req, res, next) {
     });
 });
 
-router.post('/login', (req, res, next) => {
-    var nick = req.body.nick;
-    console.log("Haluttiin nimimerkki " + nick);
-    pg.connect(connectionString, (err, client, done) => {
-        if (err) {
-            done();
-            console.log(err);
-            return res.status(500).json({success: false, data: err});
-        }
-        var query = client.query("INSERT INTO users(nick) SELECT $1 WHERE NOT EXISTS (SELECT id FROM users WHERE nick=$2) RETURNING id", [nick, nick]);
-        query.on('end', () => {
-            done();
-            req.session.sessionFlash = {type: 'user', message: nick };
-            return     res.redirect('/');
+// router.post('/login', (req, res, next) => {
+//     var nick = req.body.nick;
+//     console.log("Haluttiin nimimerkki " + nick);
+//     pg.connect(connectionString, (err, client, done) => {
+//         if (err) {
+//             done();
+//             console.log(err);
+//             return res.status(500).json({success: false, data: err});
+//         }
+//         var query = client.query("INSERT INTO users(nick) SELECT $1 WHERE NOT EXISTS (SELECT id FROM users WHERE nick=$2) RETURNING id", [nick, nick]);
+//         query.on('end', () => {
+//             done();
+//             req.session.sessionFlash = {type: 'user', message: nick };
+//             return     res.redirect('/');
+//
+//         });
+//     });
+//
+// });
 
-        });
-    });
-    
-});
+function ensureAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) { 
+        return next(); 
+    }
+    res.redirect('/login');
+}
+
 
 
 module.exports = router;

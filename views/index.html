@@ -7,25 +7,15 @@
     
     <body>
         <h1><%= title %></h1>
-        <p>Tervetuloa <%= title %>in!</p>
 
-        <% if(!sessionFlash || !sessionFlash.message) { %>
-        <form method="post" action="/login">
-            <p>Valitse nimimerkki</p>
-            <input type="text" name="nick">
-            <input type="submit" value="Liity keskusteluun">
-        </form>
-
-        <% } else { %>
         <h2>Chat</h2>
-        <p>Hei, <%= sessionFlash.message %>!</p>
+        <p>Hei, <%= user.firstname %>!</p>
         <div id="chat">
             
         </div>
         
         <input type="text" id="message" aria-label="Kirjoita viesti">
         <button id="send">Lähetä</button>
-        <% } %>
 
         <script src="/javascripts/kayttajalista.js"></script>
         

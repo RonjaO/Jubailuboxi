@@ -1,5 +1,4 @@
 var express = require('express');
-var flash = require('express-flash');
 var passport = require('passport');
 var path = require('path');
 var pg = require('pg');
@@ -8,14 +7,39 @@ var logger = require('morgan');
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var FacebookStrategy  =     require('passport-facebook').Strategy;
 
 var routes = require('./routes/index');
 var login = require('./routes/login');
 var users = require('./routes/users');
 var connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/chat';
 var sessionStore = new session.MemoryStore;
+var config = require('./configuration/config');
 
 var app = express();
+var ws = require('express-ws')(app);
+
+// Passport session setup.
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(obj, done) {
+  done(null, obj);
+});
+
+
+// Use the FacebookStrategy within Passport.
+
+passport.use(new FacebookStrategy({
+    clientID: config.facebook_api_key,
+    clientSecret:config.facebook_api_secret ,
+    callbackURL: config.callback_url
+  },
+  function(accessToken, refreshToken, profile, done) {
+      return done(null, profile);
+}));
+
 
 // view engine setup
 app.engine('html', require('ejs').renderFile);
@@ -36,7 +60,8 @@ app.use(session({
     secret: 'secret'
 }));
 app.use(express.static(path.join(__dirname, 'public')));
-// app.use(flash);
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(function(req, res, next){
     // if there's a flash message in the session request, make it available in the response, then delete it
