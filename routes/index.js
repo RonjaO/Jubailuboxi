@@ -7,7 +7,8 @@ var bodyParser = require('body-parser');
 
 /* GET home page. */
 router.get('/', ensureAuthenticated, function(req, res, next) {
-  res.render('index', { title: 'Jubailuboxi', user: req.user });
+  // res.render('index', { title: 'Jubailuboxi', user: req.user });
+  res.redirect('/yleinen');
 });
 
 router.get('/kayttajat', function(req, res, next) {
@@ -35,25 +36,14 @@ router.get('/kayttajat', function(req, res, next) {
     });
 });
 
-// router.post('/login', (req, res, next) => {
-//     var nick = req.body.nick;
-//     console.log("Haluttiin nimimerkki " + nick);
-//     pg.connect(connectionString, (err, client, done) => {
-//         if (err) {
-//             done();
-//             console.log(err);
-//             return res.status(500).json({success: false, data: err});
-//         }
-//         var query = client.query("INSERT INTO users(nick) SELECT $1 WHERE NOT EXISTS (SELECT id FROM users WHERE nick=$2) RETURNING id", [nick, nick]);
-//         query.on('end', () => {
-//             done();
-//             req.session.sessionFlash = {type: 'user', message: nick };
-//             return     res.redirect('/');
-//
-//         });
-//     });
-//
-// });
+router.get('/yleinen', (req,res) => {
+    res.render('index', { title: 'Jubailuboxi', user: req.user, chatroom: 'yleinen' });
+});
+
+router.get('/politiikka', (req,res) => {
+    res.render('index', { title: 'Jubailuboxi', user: req.user, chatroom: 'politiikka' });
+});
+
 
 function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) { 

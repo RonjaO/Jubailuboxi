@@ -8,14 +8,20 @@
     <body>
         <h1><%= title %></h1>
 
-        <h2>Chat</h2>
+        <h2>Chat: <%= chatroom %></h2>
+        <% if(user) { %>
         <p>Hei, <%= user.firstname %>!</p>
+        <% } %>
         <div id="chat">
             
         </div>
         
         <input type="text" id="message" aria-label="Kirjoita viesti">
         <button id="send">Lähetä</button>
+        
+        <h3>Keskusteluhuoneet</h3>
+        <a href="/yleinen">Yleinen</a>
+        <a href="/politiikka">Politiikka</a>
 
         <script src="/javascripts/kayttajalista.js"></script>
         

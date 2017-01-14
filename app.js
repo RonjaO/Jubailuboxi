@@ -11,13 +11,11 @@ var FacebookStrategy  =     require('passport-facebook').Strategy;
 
 var routes = require('./routes/index');
 var login = require('./routes/login');
-var users = require('./routes/users');
 var connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/chat';
 var sessionStore = new session.MemoryStore;
 var config = require('./configuration/config');
 
 var app = express();
-var ws = require('express-ws')(app);
 
 // Passport session setup.
 passport.serializeUser(function(user, done) {
@@ -71,8 +69,8 @@ app.use(function(req, res, next){
 });
 
 app.use('/', routes);
-app.use('/users', users);
 app.use('/login', login);
+// app.use('/ws', websocket);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

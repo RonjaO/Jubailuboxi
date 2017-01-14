@@ -6,6 +6,7 @@ var app = require('./app');
 var debug = require('debug')('node-postgress-todo:server');
 var WebSocketServer = require('websocket').server;
 var http = require('http');
+var fs = require('fs');
 
 /**
  * Get port from environment and store in Express.
@@ -15,7 +16,7 @@ var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 // List of currently connected clients 
-var clients = [ ];
+var clients = new Map();
 
 /**
  * Create HTTP server.
@@ -116,18 +117,30 @@ wsServer.on('request', function(request) {
     }
 
     var connection = request.accept('echo-protocol', request.origin);
-    var index = clients.push(connection) - 1;
+    // var index = clients.push(connection) - 1;
+    clients.set(connection, "/yleinen");
     console.log((new Date()) + ' Connection accepted.');
-    
+
     // Keskusteluhistorian lähettäminen tässä?
-    
+
     connection.on('message', function(message) {
         if (message.type === 'utf8') {
             console.log('Received Message: ' + message.utf8Data);
-            for (var i=0; i < clients.length; i++) {
-                clients[i].sendUTF(message.utf8Data);
-            }
+            var jsonMessage = JSON.parse(message.utf8Data);
+            console.log("Viestin tyyppi: " + jsonMessage.type);
             
+            if (jsonMessage.type === "join") {
+                clients.set(connection, jsonMessage.chatroom);
+                console.log("Mentiin rhattiin " + jsonMessage.chatRoom);
+            } else if (jsonMessage.type === 'message') {
+                for (var [client, chatroom] of clients) {
+                    if (chatroom === jsonMessage.chatroom) {
+                        client.sendUTF(message.utf8Data);
+                    }
+                }
+                
+            }
+
             // connection.sendUTF(message.utf8Data);
         }
         else if (message.type === 'binary') {
@@ -139,3 +152,5 @@ wsServer.on('request', function(request) {
         console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
     });
 });
+
+module.exports = server;

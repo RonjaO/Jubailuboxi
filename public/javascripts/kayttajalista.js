@@ -14,12 +14,14 @@ $("#kayttajat").click(function() {
 });
 
 var HOST = location.origin.replace(/^http/, 'ws')
+console.log("sijainti: " + HOST + " ja " + window.location.pathname);
 var socket = new WebSocket(HOST, "echo-protocol");
 // exampleSocket.connect
 
 $("#send").click(function() {
     var message = {
         type: "message",
+        chatroom: window.location.pathname,
         content: document.getElementById("message").value,
         date: Date.now()
     };
@@ -33,7 +35,15 @@ socket.onmessage = function (event) {
     var message = JSON.parse(event.data);
     var time = new Date(message.date);
     var timestring = time.toTimeString().substring(0, 5);
-$("<p/>").text(timestring + " - " + message.content).appendTo("#chat");
+    $("<p/>").text(timestring + " - " + message.content).appendTo("#chat");
     
 }
 
+$(document).ready(function() {
+    var message = {
+        type: "join",
+        chatroom: window.location.pathname};
+
+        socket.send(JSON.stringify(message));
+    
+})
