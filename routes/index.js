@@ -6,7 +6,7 @@ var connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/ch
 var bodyParser = require('body-parser');
 
 /* GET home page. */
-router.get('/', ensureAuthenticated, function(req, res, next) {
+router.get('/', isLoggedIn, function(req, res, next) {
   // res.render('index', { title: 'Jubailuboxi', user: req.user });
   res.redirect('/yleinen');
 });
@@ -36,16 +36,16 @@ router.get('/kayttajat', function(req, res, next) {
     });
 });
 
-router.get('/yleinen', (req,res) => {
-    res.render('index', { title: 'Jubailuboxi', user: req.user, chatroom: 'yleinen' });
+router.get('/yleinen', isLoggedIn, (req,res) => {
+    res.render('index', { title: 'Jubailuboxi', user: req.user.name.givenName, chatroom: 'yleinen' });
 });
 
-router.get('/politiikka', (req,res) => {
+router.get('/politiikka', isLoggedIn, (req,res) => {
     res.render('index', { title: 'Jubailuboxi', user: req.user, chatroom: 'politiikka' });
 });
 
 
-function ensureAuthenticated(req, res, next) {
+function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) { 
         return next(); 
     }

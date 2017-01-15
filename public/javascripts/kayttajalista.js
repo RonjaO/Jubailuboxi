@@ -33,6 +33,17 @@ socket.onmessage = function (event) {
     console.log(event.data);
     
     var message = JSON.parse(event.data);
+    
+    // Jos serveriltä tullut viesti on ilmoitus yhteyden muodostamisesta, lähetetään takaisin tieto, missä keskusteluhuoneessa ollaan
+    if (message.type === 'connection' && message.connection) {
+        var joinMessage = {
+            type: "join",
+            chatroom: window.location.pathname};
+
+        socket.send(JSON.stringify(joinMessage));
+        return;
+    }
+
     var time = new Date(message.date);
     var timestring = time.toTimeString().substring(0, 5);
     $("<p/>").text(timestring + " - " + message.content).appendTo("#chat");
@@ -40,10 +51,5 @@ socket.onmessage = function (event) {
 }
 
 $(document).ready(function() {
-    var message = {
-        type: "join",
-        chatroom: window.location.pathname};
-
-        socket.send(JSON.stringify(message));
     
 })

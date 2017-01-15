@@ -120,6 +120,10 @@ wsServer.on('request', function(request) {
     // var index = clients.push(connection) - 1;
     clients.set(connection, "/yleinen");
     console.log((new Date()) + ' Connection accepted.');
+    
+    // Kerrotaan clientille yhteyden muodostuneen
+    var connectionMessage = { type: 'connection', connection: true };
+    connection.sendUTF(JSON.stringify(connectionMessage));
 
     // Keskusteluhistorian lähettäminen tässä?
 
