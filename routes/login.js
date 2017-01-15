@@ -6,6 +6,7 @@ var path = require('path');
 var FacebookStrategy  =     require('passport-facebook').Strategy;
 var config = require('../configuration/config');
 var app = require('../app');
+var User = require('../models/user');
 
 var connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/chat';
 
@@ -39,22 +40,29 @@ router.get('/', (req, res) => {
 
 
 router.post('/', (req, res, next) => {
+    var user = req.user;
     var nick = req.body.nick;
     console.log("Haluttiin nimimerkki " + nick);
-    pg.connect(connectionString, (err, client, done) => {
-        if (err) {
-            done();
-            console.log(err);
-            return res.status(500).json({success: false, data: err});
-        }
-        var query = client.query("INSERT INTO users(nick) SELECT $1 WHERE NOT EXISTS (SELECT id FROM users WHERE nick=$2) RETURNING id", [nick, nick]);
-        query.on('end', () => {
-            done();
-            req.session.sessionFlash = {type: 'user', message: nick };
-            return     res.redirect('/');
+    
+    user.nick = nick;
+    User.update(req.user.id, nick);
+    
+    res.redirect('/');
 
-        });
-    });
+    // pg.connect(connectionString, (err, client, done) => {
+    //     if (err) {
+    //         done();
+    //         console.log(err);
+    //         return res.status(500).json({success: false, data: err});
+    //     }
+    //     var query = client.query("INSERT INTO users(nick) SELECT $1 WHERE NOT EXISTS (SELECT id FROM users WHERE nick=$2) RETURNING id", [nick, nick]);
+    //     query.on('end', () => {
+    //         done();
+    //         req.session.sessionFlash = {type: 'user', message: nick };
+    //         return     res.redirect('/');
+    //
+    //     });
+    // });
     
 });
 
@@ -67,8 +75,9 @@ router.get('/auth/facebook/callback',
     res.redirect('/');
 });
 
-// function ensureAuthenticated(req, res, next) {
-//   if (req.isAuthenticated()) { return next(); }
+// function isLoggedInhenticated(req, res, next) {
+//   if (req.isAuthenticated()) {
+//       res.redirect('/');
 //   res.redirect('/');
 // }
 

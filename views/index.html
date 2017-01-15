@@ -7,10 +7,19 @@
     
     <body>
         <h1><%= title %></h1>
+        
+        <% if (!user.nick) { %>
+            <p>Ennen kuin pääset keskustelemaan, valitse itsellesi nimimerkki.</p>
+            <form action="/login" method="post">
+                <label for="nick">Nimimerkki: </label>
+                <input type="text" id="nick" name="nick">
+                <input type="submit" value="Liity keskusteluun">
+            </form>
+        <% } else { %>
 
         <h2>Chat: <%= chatroom %></h2>
         <% if(user) { %>
-        <p>Hei, <%= user %>!</p>
+        <p>Hei, <%= user.nick %>!</p>
         <% } %>
         <div id="chat">
             
@@ -22,6 +31,8 @@
         <h3>Keskusteluhuoneet</h3>
         <a href="/yleinen">Yleinen</a>
         <a href="/politiikka">Politiikka</a>
+        
+        <% } %>
 
         <script src="/javascripts/kayttajalista.js"></script>
         

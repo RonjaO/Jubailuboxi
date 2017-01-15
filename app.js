@@ -14,6 +14,7 @@ var login = require('./routes/login');
 var connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/chat';
 var sessionStore = new session.MemoryStore;
 var config = require('./configuration/config');
+var User = require('./models/user');
 
 var app = express();
 
@@ -35,6 +36,22 @@ passport.use(new FacebookStrategy({
     callbackURL: config.callback_url
   },
   function(accessToken, refreshToken, profile, done) {
+      var user = User.findOne(profile.id);
+
+      if (user) {
+          console.log("Käyttäjä löytyy tietokannasta");
+          return done(null, user);
+      } else {
+          console.log("Käyttäjä on uusi");
+          var newUser = new User();
+          newUser.id = profile.id;
+          newUser.save();
+
+          return done(null, newUser);
+      }
+      
+              
+      
       return done(null, profile);
 }));
 

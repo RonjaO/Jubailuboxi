@@ -37,7 +37,7 @@ router.get('/kayttajat', function(req, res, next) {
 });
 
 router.get('/yleinen', isLoggedIn, (req,res) => {
-    res.render('index', { title: 'Jubailuboxi', user: req.user.name.givenName, chatroom: 'yleinen' });
+    res.render('index', { title: 'Jubailuboxi', user: req.user, chatroom: 'yleinen' });
 });
 
 router.get('/politiikka', isLoggedIn, (req,res) => {
