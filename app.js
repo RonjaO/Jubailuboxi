@@ -36,23 +36,29 @@ passport.use(new FacebookStrategy({
     callbackURL: config.callback_url
   },
   function(accessToken, refreshToken, profile, done) {
-      var user = User.findOne(profile.id);
+      User.findOne(profile.id, function(user) {
+          console.log("Käyttäjä kirjautui " + JSON.stringify(user));
+      
+          // user.nick = user.getNick();
+          // console.log("Käyttäjällä on nimimerkki " + user.getNick());
 
-      if (user) {
-          console.log("Käyttäjä löytyy tietokannasta");
-          return done(null, user);
-      } else {
-          console.log("Käyttäjä on uusi");
-          var newUser = new User();
-          newUser.id = profile.id;
-          newUser.save();
+          if (!user || typeof user === 'undefined') {
+              console.log("Käyttäjä on uusi");
+              var newUser = new User();
+              newUser.id = profile.id;
+              newUser.save();
 
-          return done(null, newUser);
-      }
+              return done(null, newUser);
+          } else {
+              console.log("Käyttäjä löytyy tietokannasta nimimerkillä " + user.nick);
+              return done(null, user);
+          }
       
               
       
-      return done(null, profile);
+          return done(null, profile);
+          
+      });
 }));
 
 
