@@ -14,14 +14,16 @@ $("#kayttajat").click(function() {
 });
 
 var HOST = location.origin.replace(/^http/, 'ws')
-console.log("sijainti: " + HOST + " ja " + window.location.pathname);
 var socket = new WebSocket(HOST, "echo-protocol");
-// exampleSocket.connect
+var path = window.location.pathname.split('/');
+var chatroom = path[2]
 
 $("#send").click(function() {
     var message = {
         type: "message",
-        chatroom: window.location.pathname,
+        chatroom: chatroom,
+        user: window.jubailuboxi.userId,
+        nick: window.jubailuboxi.userNick,
         content: document.getElementById("message").value,
         date: Date.now()
     };
@@ -38,7 +40,7 @@ socket.onmessage = function (event) {
     if (message.type === 'connection' && message.connection) {
         var joinMessage = {
             type: "join",
-            chatroom: window.location.pathname};
+            chatroom: chatroom };
 
         socket.send(JSON.stringify(joinMessage));
         return;
@@ -46,10 +48,18 @@ socket.onmessage = function (event) {
 
     var time = new Date(message.date);
     var timestring = time.toTimeString().substring(0, 5);
-    $("<p/>").text(timestring + " - " + message.content).appendTo("#chat");
+    $("<p/>").text(timestring + " " + message.nick + ": " + message.content).appendTo("#chat");
     
 }
 
 $(document).ready(function() {
-    
+    console.log(window.jubailuboxi.history);
+    $.each(window.jubailuboxi.history, function(index, message) {
+        console.log("Viesti: " + message);
+        var time = new Date(message.date);
+        var timestring = time.toTimeString().substring(0, 5);
+        
+        $("<p/>").text(timestring + " " + message.nick + ": " + message.content).appendTo("#chat");
+        
+    });
 })

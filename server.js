@@ -7,6 +7,7 @@ var debug = require('debug')('node-postgress-todo:server');
 var WebSocketServer = require('websocket').server;
 var http = require('http');
 var fs = require('fs');
+var Message = require('./models/messages');
 
 /**
  * Get port from environment and store in Express.
@@ -95,11 +96,6 @@ function onListening() {
 // Create WeBSocketserver
 wsServer = new WebSocketServer({
     httpServer: server,
-    // You should not use autoAcceptConnections for production
-    // applications, as it defeats all standard cross-origin protection
-    // facilities built into the protocol and the browser.  You should
-    // *always* verify the connection's origin and decide whether or not
-    // to accept it.
     autoAcceptConnections: false
 });
 
@@ -117,7 +113,8 @@ wsServer.on('request', function(request) {
     }
 
     var connection = request.accept('echo-protocol', request.origin);
-    // var index = clients.push(connection) - 1;
+
+    // Liitetään uusi käyttäjä chattihuoneeseen 'yleinen'
     clients.set(connection, "/yleinen");
     console.log((new Date()) + ' Connection accepted.');
     
@@ -131,11 +128,11 @@ wsServer.on('request', function(request) {
         if (message.type === 'utf8') {
             console.log('Received Message: ' + message.utf8Data);
             var jsonMessage = JSON.parse(message.utf8Data);
-            console.log("Viestin tyyppi: " + jsonMessage.type);
+            // console.log("Viestin tyyppi: " + jsonMessage.type);
             
             if (jsonMessage.type === "join") {
                 clients.set(connection, jsonMessage.chatroom);
-                console.log("Mentiin rhattiin " + jsonMessage.chatRoom);
+                console.log("Mentiin chattiin " + jsonMessage.chatRoom);
             } else if (jsonMessage.type === 'message') {
                 for (var [client, chatroom] of clients) {
                     if (chatroom === jsonMessage.chatroom) {
@@ -143,16 +140,17 @@ wsServer.on('request', function(request) {
                     }
                 }
                 
+                // TODO: Tallennetaan viesti tietokantaan
+                var msg = new Message(jsonMessage.chatroom, jsonMessage.user, jsonMessage.content, new Date(jsonMessage.date));
+                msg.save();
             }
-
-            // connection.sendUTF(message.utf8Data);
-        }
-        else if (message.type === 'binary') {
+        } else if (message.type === 'binary') {
             console.log('Received Binary Message of ' + message.binaryData.length + ' bytes');
             connection.sendBytes(message.binaryData);
         }
     });
     connection.on('close', function(reasonCode, description) {
+        // TODO: poista clients-listasta
         console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
     });
 });

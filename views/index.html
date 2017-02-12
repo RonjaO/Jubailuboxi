@@ -2,6 +2,13 @@
 <html>
     <head>
         <title><%= title %></title>
+        <script>
+        window.jubailuboxi = {
+            userId: "<%= user.id %>",
+            userNick: "<%= user.nick %>",
+            history: <%- JSON.stringify(messagehistory) %>
+        };
+        </script>
         <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     </head>
     
@@ -29,8 +36,8 @@
         <button id="send">Lähetä</button>
         
         <h3>Keskusteluhuoneet</h3>
-        <a href="/yleinen">Yleinen</a>
-        <a href="/politiikka">Politiikka</a>
+        <a href="/chat/yleinen">Yleinen</a>
+        <a href="/chat/politiikka">Politiikka</a>
         
         <% } %>
 

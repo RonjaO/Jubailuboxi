@@ -4,11 +4,12 @@ var pg = require('pg');
 var path = require('path');
 var connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/chat';
 var bodyParser = require('body-parser');
+var Message = require('../models/messages');
 
 /* GET home page. */
 router.get('/', isLoggedIn, function(req, res, next) {
   // res.render('index', { title: 'Jubailuboxi', user: req.user });
-  res.redirect('/yleinen');
+  res.redirect('/chat/yleinen');
 });
 
 router.get('/kayttajat', function(req, res, next) {
@@ -36,13 +37,15 @@ router.get('/kayttajat', function(req, res, next) {
     });
 });
 
-router.get('/yleinen', isLoggedIn, (req,res) => {
-    res.render('index', { title: 'Jubailuboxi', user: req.user, chatroom: 'yleinen' });
+router.get('/chat/:room', isLoggedIn, (req,res) => {
+    Message.findHistory(req.params.room, function(history) {
+        res.render('index', { title: 'Jubailuboxi', user: req.user, chatroom: req.params.room, messagehistory: history });
+    });
 });
 
-router.get('/politiikka', isLoggedIn, (req,res) => {
-    res.render('index', { title: 'Jubailuboxi', user: req.user, chatroom: 'politiikka' });
-});
+// router.get('/politiikka', isLoggedIn, (req,res) => {
+//     res.render('index', { title: 'Jubailuboxi', user: req.user, chatroom: 'politiikka' });
+// });
 
 
 function isLoggedIn(req, res, next) {

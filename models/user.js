@@ -17,7 +17,7 @@ User.prototype.getNick = function() {
             done();
             console.log(err);
         }
-         // SQL Query > Select Data
+        // SQL Query > Select Data
         const query = client.query('SELECT nick FROM users WHERE id=$1', [this.id]);
         // Stream results back one row at a time
         query.on('row', (row, result) => {

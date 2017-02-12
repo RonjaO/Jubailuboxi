@@ -37,7 +37,7 @@ passport.use(new FacebookStrategy({
   },
   function(accessToken, refreshToken, profile, done) {
       User.findOne(profile.id, function(user) {
-          console.log("Käyttäjä kirjautui " + JSON.stringify(user));
+          console.log("Käyttäjä kirjautui, id " + profile.id);
       
           // user.nick = user.getNick();
           // console.log("Käyttäjällä on nimimerkki " + user.getNick());

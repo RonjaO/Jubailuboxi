@@ -1,8 +1,6 @@
 CREATE TABLE users(
-    id SERIAL PRIMARY KEY,
-    nick varchar(20) UNIQUE,
-    username varchar(50),
-    password varchar(200)
+    id decimal PRIMARY KEY,
+    nick varchar(20) UNIQUE
 );
 
 CREATE TABLE chatroom(
@@ -11,15 +9,10 @@ CREATE TABLE chatroom(
     description varchar(300)
 );
 
-CREATE TABLE chatroom_users(
-    chatroom_id integer REFERENCES chatroom(id) NOT NULL,
-    user_id integer REFERENCES users(id) NOT NULL
-);
-
 CREATE TABLE message(
     id SERIAL PRIMARY KEY,
     chatroom_id integer REFERENCES chatroom(id),
-    user_id integer REFERENCES users(id),
+    user_id decimal REFERENCES users(id),
     content varchar(500),
     date timestamp
 );
