@@ -1,8 +1,39 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: #888;
+  margin: 0;
+  padding: 0;
+  font-family: 'Quattrocento Sans', sans-serif;
 }
 
 a {
   color: #00B7FF;
+}
+
+.content {
+  background-color: #FFF;
+  width: 50%;
+  heigth: 80vh;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+  padding: 1px 20px 10px 20px;
+  box-sizing: border-box;
+}
+  
+.chat {
+  overflow: auto;
+  border: 2px solid #444;
+}
+
+.header {
+  width: 50%;
+  background-color: #FFFF50;
+  color: #FF8C00;
+  position: relative;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+.menu {
+  background-color: #FFA500;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  float: left;
 }

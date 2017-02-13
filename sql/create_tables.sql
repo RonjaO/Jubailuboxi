@@ -1,5 +1,5 @@
 CREATE TABLE users(
-    id decimal PRIMARY KEY,
+    id varchar(100) PRIMARY KEY,
     nick varchar(20) UNIQUE
 );
 
@@ -12,7 +12,7 @@ CREATE TABLE chatroom(
 CREATE TABLE message(
     id SERIAL PRIMARY KEY,
     chatroom_id integer REFERENCES chatroom(id),
-    user_id decimal REFERENCES users(id),
+    user_id varchar(100) REFERENCES users(id),
     content varchar(500),
     date timestamp
 );
