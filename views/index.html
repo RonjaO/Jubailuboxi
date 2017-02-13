@@ -16,31 +16,33 @@
     </head>
     
     <body>
-
-        <div class="content">
+        <div class="canvas">
             <h1 class="header"><%= title %></h1>
-        
-        <% if (!user.nick) { %>
-            <p>Ennen kuin pääset keskustelemaan, valitse itsellesi nimimerkki.</p>
-            <form action="/login" method="post">
-                <label for="nick">Nimimerkki: </label>
-                <input type="text" id="nick" name="nick">
-                <input type="submit" value="Liity keskusteluun">
-            </form>
-        <% } else { %>
 
-            <h2>Chat: <%= chatroom %></h2>
-            <% if(user) { %> 
-                <p>Hei, <%= user.nick %>!</p> 
-            <% } %> 
-            <div id="chat">
-            
-            </div>
+            <div class="content">
         
-            <table class="send-message" role="presentation">
-                <tr><td><input type="text" id="message" aria-label="Kirjoita viesti"><td>
+            <% if (!user.nick) { %>
+                <p>Ennen kuin pääset keskustelemaan, valitse itsellesi nimimerkki.</p>
+                <form action="/login" method="post">
+                    <label for="nick">Nimimerkki: </label>
+                    <input type="text" id="nick" name="nick">
+                    <input type="submit" value="Liity keskusteluun">
+                </form>
+            <% } else { %>
+
+                <h2>Chat: <%= chatroom %></h2>
+                <% if(user) { %> 
+                    <p>Hei, <%= user.nick %>!</p> 
+                <% } %> 
+                <div id="chat">
+            
+                </div>
+        
+                <table class="send-message" role="presentation">
+                    <tr><td><input type="text" id="message" aria-label="Kirjoita viesti"><td>
                     <td><input type="submit" id="send" value="Lähetä" /></td></tr>
-            </table>
+                </table>
+            </div>
         </div>
         
         <div class="menu">
