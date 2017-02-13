@@ -16,12 +16,12 @@
     </head>
     
     <body>
-        <div class="canvas">
+        <div class="canvas" aria-label="canvas">
             <h1 class="header"><%= title %></h1>
 
             <div class="content">
         
-            <% if (!user.nick) { %>
+            <% if (!user.nick) { %></
                 <p>Ennen kuin pääset keskustelemaan, valitse itsellesi nimimerkki.</p>
                 <form action="/login" method="post">
                     <label for="nick">Nimimerkki: </label>
@@ -34,7 +34,7 @@
                 <% if(user) { %> 
                     <p>Hei, <%= user.nick %>!</p> 
                 <% } %> 
-                <div id="chat">
+                <div id="chat" aria-label="chat-alue">
             
                 </div>
         
