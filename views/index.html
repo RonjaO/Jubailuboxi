@@ -16,10 +16,10 @@
     </head>
     
     <body>
-        <h1 class="header"><%= title %></h1>
-        
 
         <div class="content">
+            <h1 class="header"><%= title %></h1>
+        
         <% if (!user.nick) { %>
             <p>Ennen kuin pääset keskustelemaan, valitse itsellesi nimimerkki.</p>
             <form action="/login" method="post">
@@ -37,7 +37,7 @@
             
             </div>
         
-            <table role="presentation">
+            <table class="send-message" role="presentation">
                 <tr><td><input type="text" id="message" aria-label="Kirjoita viesti"><td>
                     <td><input type="submit" id="send" value="Lähetä" /></td></tr>
             </table>

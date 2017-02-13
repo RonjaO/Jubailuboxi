@@ -30,18 +30,22 @@ a {
   width: 50%;
   background-color: #FFFF50;
   color: #FF8C00;
-  margin: 0 auto 2vh auto;
   position: relative;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
 }
 
 .menu {
   background-color: #FFA500;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-  float: left;
+  position: absolute;
+  top: 0;
   margin-top: 20vh;
 }
 
 ul {
   list-style: none;
+}
+
+.send-message {
+  position: absolute;
+  bottom: 10px;
 }
