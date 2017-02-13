@@ -18,11 +18,6 @@
     <body>
         <h1 class="header"><%= title %></h1>
         
-        <div class="menu">
-            <h3>Keskusteluhuoneet</h3>
-            <a href="/chat/yleinen">Yleinen</a>
-            <a href="/chat/politiikka">Politiikka</a>
-        </div>
 
         <div class="content">
         <% if (!user.nick) { %>
@@ -45,6 +40,15 @@
             <input type="text" id="message" aria-label="Kirjoita viesti">
             <button id="send">Lähetä</button>
         </div>
+        
+        <div class="menu">
+            <h3>Keskusteluhuoneet</h3>
+            <ul>
+                <li><a href="/chat/yleinen">Yleinen</a></li>
+                <li><a href="/chat/politiikka">Politiikka</a></li>
+            </ul>
+        </div>
+        
         
         <% } %>
 
