@@ -6,7 +6,7 @@ body {
 }
 
 a {
-  color: #00B7FF;
+  color: #000;
 }
 
 .content {
@@ -30,7 +30,7 @@ a {
   width: 50%;
   background-color: #FFFF50;
   color: #FF8C00;
-  margin: 0 auto;
+  margin: 0 auto 2vh auto;
   position: relative;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
 }
