@@ -27,7 +27,8 @@ a {
 }
   
 .chat {
-  height: 80%
+  width: 90%;
+  height: 80%;
   overflow: auto;
   border: 2px solid #888;
 }
@@ -54,4 +55,16 @@ ul {
 .send-message {
   position: absolute;
   bottom: 10px;
+}
+
+@media screen and (max-width: 500) {
+  .menu {
+    background-color: #FFA500;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    position: relative;
+  }
+
+  .canvas {
+    width: 100%;
+  }
 }

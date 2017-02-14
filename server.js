@@ -139,8 +139,8 @@ wsServer.on('request', function(request) {
                         client.sendUTF(message.utf8Data);
                     }
                 }
-                
-                // TODO: Tallennetaan viesti tietokantaan
+
+                // Tallennetaan viesti tietokantaan                
                 var msg = new Message(jsonMessage.chatroom, jsonMessage.user, jsonMessage.content, new Date(jsonMessage.date));
                 msg.save();
             }
