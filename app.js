@@ -53,11 +53,6 @@ passport.use(new FacebookStrategy({
               console.log("Käyttäjä löytyy tietokannasta nimimerkillä " + user.nick);
               return done(null, user);
           }
-      
-              
-      
-          return done(null, profile);
-          
       });
 }));
 

@@ -1,1 +1,26 @@
-Tapahtui virhe! <%= error %>
+<!DOCTYPE HTML>
+<html lang="fi">
+    <head>
+        <title><%= title %></title>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://fonts.googleapis.com/css?family=Quattrocento+Sans:400,700" rel="stylesheet">
+        <link rel="stylesheet" href="/stylesheets/style.css">
+    </head>
+    
+    <body>
+        <div class="canvas">
+            <h1 class="header"><%= title %></h1>
+
+            <div class="content">
+                <h2>Virhe</h2>
+                <p>Oops... Tapahtui jotain odottamatonta.</p>
+                <p style="position: absolute; left: -10000; overflow:none;"><%= error %>
+            </div>
+
+        </div>
+    </body>
+    
+</html>
+
+    

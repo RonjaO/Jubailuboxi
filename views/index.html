@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="fi">
     <head>
         <title><%= title %></title>
         <script>
@@ -16,7 +16,7 @@
     </head>
     
     <body>
-        <div class="canvas" aria-label="canvas">
+        <div class="canvas">
             <h1 class="header"><%= title %></h1>
 
             <div class="content">
@@ -34,14 +34,16 @@
                 <% if(user) { %> 
                     <p>Hei, <%= user.nick %>!</p> 
                 <% } %> 
-                <div id="chat" aria-label="chat-alue">
+                <div id="chat">
             
                 </div>
         
-                <table class="send-message" role="presentation">
-                    <tr><td><input type="text" id="message" aria-label="Kirjoita viesti"><td>
-                    <td><input type="submit" id="send" value="Lähetä" /></td></tr>
-                </table>
+                <form>
+                    <table class="send-message" role="presentation">
+                        <tr><td><input type="text" id="message" aria-label="Kirjoita viesti"><td>
+                            <td><input type="submit" id="send" value="Lähetä" /></td></tr>
+                    </table>
+                </form>
             </div>
         </div>
         
